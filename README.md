@@ -1,2 +1,2 @@
-# ReactSwiftUI
-Write SwiftUI views as React components
+## ReactSwiftUI
+Experiments with React and SwiftUI
