@@ -23,12 +23,21 @@ struct ReactComponentView: View {
     }
     
     var body: some View {
-        Group {
-            if reactElement.type == "text" {
+        switch reactElement.type {
+        case .text:
+            ForEach(reactElement.children!, id: \.self) { child in
+                renderChildren(child: child)
+            }
+        case .Button:
+            Button(action: {
+                Task { @MainActor in
+                    reactElement.onClick?.call(withArguments: [])
+                }
+            }, label: {
                 ForEach(reactElement.children!, id: \.self) { child in
                     renderChildren(child: child)
                 }
-            }
+            })
         }
     }
 }

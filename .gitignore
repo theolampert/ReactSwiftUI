@@ -1,8 +1,7 @@
+Sources/ReactSwiftUI/Resources/*.js
 .DS_Store
-/.build
-/Packages
-xcuserdata/
-DerivedData/
-.swiftpm/configuration/registries.json
-.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
-.netrc
+Packages/
+Package.pins
+Package.resolved
+.swiftpm
+.build/

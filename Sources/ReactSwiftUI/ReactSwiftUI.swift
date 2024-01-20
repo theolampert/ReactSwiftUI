@@ -2,27 +2,39 @@ import JavaScriptCore
 import SwiftUI
 
 let reactURL = Bundle.module.url(forResource: "react.development", withExtension: "js")!
-let componentURL = Bundle.module.url(forResource: "component", withExtension: "js")!
 
 let reactSrc = try! String(contentsOf: reactURL)
-let componentSrc = try! String(contentsOf: componentURL)
 let context: JSContext = JSContext()
 
+enum ElementTypes: String {
+    case text
+    case Button
+}
 
-enum ReactChild: Equatable, Hashable {
+
+
+enum ReactChild: Hashable {
     case element(ReactElement)
     case text(String)
 }
 
-struct ReactElement: Equatable, Hashable {
-    var type: String
+struct ReactElement: Hashable {
+    var type: ElementTypes
     var props: [String: String]?
     var children: [ReactChild]?
+    
+    var onClick: JSValue?
 
-    init(type: String, props: [String: String]? = nil, children: [ReactChild]? = nil) {
+    init(
+        type: ElementTypes,
+        props: [String: String]? = nil,
+        children: [ReactChild]? = nil,
+        onClick: JSValue? = nil
+    ) {
         self.type = type
         self.props = props
         self.children = children
+        self.onClick = onClick
     }
 }
 
@@ -33,20 +45,20 @@ func createTree(source: String) -> ReactElement? {
 }
 
 func createTree(component: JSValue) -> ReactElement? {
-    var children: [ReactChild] = []
     
-    if let elementChildren = component.forProperty("props")?.forProperty("children") {
-        print(elementChildren)
-        if let text = elementChildren.toString() {
-            children.append(.text(text))
-        }
-//        else if !elementChildren.isNull {
-//            createTree(component: elementChildren)
-//        }
+    var reactElement = ReactElement(
+        type: ElementTypes(rawValue: component.forProperty("type").toString())!
+    )
+    
+    if let onClick = component.forProperty("props")?.forProperty("onClick") {
+        reactElement.onClick = onClick
     }
     
-    return ReactElement(
-        type: component.forProperty("type").toString(),
-        children: children
-    )
+    if let elementChildren = component.forProperty("props")?.forProperty("children") {
+        if let text = elementChildren.toString() {
+            reactElement.children?.append(.text(text))
+        }
+    }
+    
+    return reactElement
 }

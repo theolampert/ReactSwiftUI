@@ -13,6 +13,6 @@ final class RUITests: XCTestCase {
             """
         )
         
-        XCTAssertEqual(result?.type, "text")
+        XCTAssertEqual(result?.type, .text)
     }
 }
