@@ -6,13 +6,21 @@ final class RUITests: XCTestCase {
         let result = createTree(
             source: """
                 React.createElement(
-                  'text',
-                  null,
-                  'Hello, World!'
+                    'Button',
+                    {
+                        onClick: () => {
+                            return true; // Just return something so we can assert on it.
+                        }
+                    },
+                    'Hello, World!'
                 );
             """
         )
         
-        XCTAssertEqual(result?.type, .text)
+        XCTAssertEqual(result?.type, .Button)
+        XCTAssertEqual(result?.children?.first, .text("Hello, World!"))
+        XCTAssertNotNil(result?.onClick)
+        
+        XCTAssertTrue(result!.onClick!.call(withArguments: []).toBool())
     }
 }

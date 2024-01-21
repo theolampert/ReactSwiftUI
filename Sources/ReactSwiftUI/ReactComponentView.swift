@@ -30,9 +30,7 @@ struct ReactComponentView: View {
             }
         case .Button:
             Button(action: {
-                Task { @MainActor in
-                    reactElement.onClick?.call(withArguments: [])
-                }
+                reactElement.onClick?.call(withArguments: [])
             }, label: {
                 ForEach(reactElement.children!, id: \.self) { child in
                     renderChildren(child: child)

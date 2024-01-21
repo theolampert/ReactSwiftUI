@@ -11,8 +11,6 @@ enum ElementTypes: String {
     case Button
 }
 
-
-
 enum ReactChild: Hashable {
     case element(ReactElement)
     case text(String)
@@ -28,7 +26,7 @@ struct ReactElement: Hashable {
     init(
         type: ElementTypes,
         props: [String: String]? = nil,
-        children: [ReactChild]? = nil,
+        children: [ReactChild] = [],
         onClick: JSValue? = nil
     ) {
         self.type = type
