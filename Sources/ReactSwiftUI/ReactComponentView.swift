@@ -3,7 +3,7 @@ import SwiftUI
 struct ReactComponentView: View {
     init(component: String) {
         self.component = component
-        self.reactElement = createTree(source: component)!
+        self.reactElement = createTree(from: component)!
     }
     
     let component: String

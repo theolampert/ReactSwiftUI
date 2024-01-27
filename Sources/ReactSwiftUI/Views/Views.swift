@@ -10,7 +10,9 @@ import SwiftUI
         
         ReactComponentView(
             component: """
-            React.createElement('Button', null, 'Hello, React!');
+            React.createElement('Button', null, [
+                React.createElement('text', null, 'Press Me');
+            ]);
             """
         ).padding()
     }
